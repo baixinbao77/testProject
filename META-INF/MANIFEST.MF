@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Main-Class: jxd.bxb.test.main
+Class-Path: mysql-connector-java-8.0.20.jar postgresql-42.4.0.jar mysql-
+ connector-java-8.0.20.jar slf4j-api-1.7.30.jar postgresql-42.4.0.jar sl
+ f4j-api-1.7.30.jar postgresql-42.4.0.jar mysql-connector-java-8.0.20.ja
+ r slf4j-api-1.7.30.jar
+

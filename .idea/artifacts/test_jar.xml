@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact name="test:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/test_jar</output-path>
+    <root id="root">
+      <element id="archive" name="test.jar">
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+        </element>
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/lib/mysql-connector-java-8.0.20.jar" />
+      <element id="library" level="project" name="lib" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/postgresql-42.4.0.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/slf4j-api-1.7.30.jar" />
+    </root>
+  </artifact>
+</component>

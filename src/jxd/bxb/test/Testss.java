@@ -3,8 +3,12 @@ package jxd.bxb.test;
 import com.mysql.cj.xdevapi.WarningImpl;
 import com.sun.org.slf4j.internal.LoggerFactory;
 import jxd.bxb.test.All.EntityUtils.Path;
+import jxd.bxb.test.Connect.Controller.BaseController;
+import jxd.bxb.test.result.Result;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +18,7 @@ import java.util.List;
  * @author baixinbao
  * @create 2022/6/27
  */
-public class Testss {
+public class Testss extends BaseController<Result> {
 
     public class ListNode {
         int val;
@@ -57,20 +61,18 @@ public class Testss {
         }
     }
 
-
+@Test
+public void testsh(){
+        Integer a = null;
+    System.out.println(a.equals(Integer.valueOf(1)));
+}
 
 
 
     @Test
     public void test () {
-        Solution solution = new Solution();
-        ListNode node = solution.addTwoNumbers(new ListNode(2, new ListNode(4, new ListNode(3))),
-                new ListNode(5, new ListNode(5, new ListNode(6, new ListNode(7)))));
-        while (node != null) {
-            System.out.println(node.val);
-            node = node.next;
-        }
-
+        Result result = new Result();
+        super.insert(result);
     }
 
     @Test

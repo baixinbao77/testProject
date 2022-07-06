@@ -11,13 +11,16 @@ import java.util.*;
  * @create 2022/6/16
  */
 public class MyConnect {
+    private static Connection conn = null;
     public static List<String> getFieldList(String tableName) throws SQLException {
-        Connection connection = getConnection();
+        if (conn == null) {
+            conn = getConnection();
+        }
         String sql = "select * from " + tableName;
         PreparedStatement stmt;
         List<String> list = new ArrayList<>();
         try {
-            stmt = connection.prepareStatement(sql);
+            stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             ResultSetMetaData data = rs.getMetaData();
             for (int i = 1; i <= data.getColumnCount(); i++) {
@@ -32,12 +35,14 @@ public class MyConnect {
     }
 
     public static List<String> getFieldTypeList(String tableName) throws SQLException {
-        Connection connection = getConnection();
+        if (conn == null) {
+            conn = getConnection();
+        }
         String sql = "select * from " + tableName;
         PreparedStatement stmt;
         List<String> list = new ArrayList<>();
         try {
-            stmt = connection.prepareStatement(sql);
+            stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             ResultSetMetaData data = rs.getMetaData();
             for (int i = 1; i <= data.getColumnCount(); i++) {
@@ -52,10 +57,12 @@ public class MyConnect {
     }
 
     public static List<String> getFieldDescList(String tableName) throws SQLException {
-        Connection connection = getConnection();
-        DatabaseMetaData metaData = connection.getMetaData();
+        if (conn == null) {
+            conn = getConnection();
+        }
+        DatabaseMetaData metaData = conn.getMetaData();
         List<String> list = new ArrayList<>();
-        ResultSet rs = metaData.getColumns(connection.getCatalog(), "%", tableName, "%");
+        ResultSet rs = metaData.getColumns(conn.getCatalog(), "%", tableName, "%");
         while (rs.next()) {
             list.add(rs.getString(ResultSetColumnKeys.REMARKS.name()));
         }
@@ -63,10 +70,12 @@ public class MyConnect {
     }
 
     public static String getFieldDesc(String tableName , String labelName) throws SQLException {
-        Connection connection = getConnection();
-        DatabaseMetaData metaData = connection.getMetaData();
+        if (conn == null) {
+            conn = getConnection();
+        }
+        DatabaseMetaData metaData = conn.getMetaData();
         String result = "";
-        ResultSet rs = metaData.getColumns(connection.getCatalog(), "%", tableName, labelName);
+        ResultSet rs = metaData.getColumns(conn.getCatalog(), "%", tableName, labelName);
         while (rs.next()) {
             result = rs.getString(ResultSetColumnKeys.REMARKS.name());
         }
