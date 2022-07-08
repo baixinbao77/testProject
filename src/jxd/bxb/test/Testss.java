@@ -2,14 +2,21 @@ package jxd.bxb.test;
 
 import com.mysql.cj.xdevapi.WarningImpl;
 import com.sun.org.slf4j.internal.LoggerFactory;
+import jxd.bxb.test.All.EntityUtils.EntityUtil;
 import jxd.bxb.test.All.EntityUtils.Path;
+import jxd.bxb.test.All.EntityUtils.PoUtils;
 import jxd.bxb.test.Connect.Controller.BaseController;
+import jxd.bxb.test.Connect.MyConnect;
+import jxd.bxb.test.Connect.PgConnect;
 import jxd.bxb.test.result.Result;
+import jxd.bxb.test.result.employees.model.po.EmployeesPo;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +25,7 @@ import java.util.List;
  * @author baixinbao
  * @create 2022/6/27
  */
-public class Testss extends BaseController<Result> {
+public class Testss extends BaseController<EmployeesPo> {
 
     public class ListNode {
         int val;
@@ -63,24 +70,45 @@ public class Testss extends BaseController<Result> {
 
 @Test
 public void testsh(){
-        Integer a = null;
-    System.out.println(a.equals(Integer.valueOf(1)));
+        Integer a = 999;
+    System.out.println(a.toString().length());
 }
 
 
 
     @Test
     public void test () {
-        Result result = new Result();
-        super.insert(result);
+        EmployeesPo employeesPo = new EmployeesPo();
+        employeesPo.setEmployeeid(1000);
+        employeesPo.setEmployeename("zgk");
+        employeesPo.setAge(10);
+        employeesPo.setIdcard("saasa ");
+        employeesPo.setEmployeeid(1000);
+        employeesPo.setPassword("saas");
+        employeesPo.setPhonenumber("saas");
+        employeesPo.setSalary(12);
+        employeesPo.setHiredate("2022-02-02");
+
+        super.insert(employeesPo);
     }
 
     @Test
     public void testsas () {
-        Field[] fields = Path.class.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            System.out.println(fields[i].getName());
-        }
+       String a = null;
+        a.length();
+        int integer = 10;
+    }
+
+    @Test
+    public void testyyy() throws SQLException, IOException {
+        String tableName = "employees";
+        String fileName = "employees";
+        String name = "employees";
+        List<String> fieldList = MyConnect.getFieldList(tableName);
+        List<String> fieldDescList = EntityUtil.initFieldDesc(MyConnect.getFieldDescList(tableName));
+        List<String> fieldTypeListOld = MyConnect.getFieldTypeList(tableName);
+        List<String> fieldTypeListNew = EntityUtil.initFieldTypeList(fieldTypeListOld);
+        String poPath = PoUtils.createPoFile(fieldList, fieldTypeListNew, fieldDescList, fileName, name , tableName);
     }
 
 }

@@ -149,7 +149,7 @@ public class StringUtil {
     }
 
     private static <T , R> boolean equal(List<T> keys , List<R> values) {
-        return keys.size() == values.size();
+        return keys == values;
     }
 
 
@@ -165,6 +165,29 @@ public class StringUtil {
         return false;
     }
 
+    public static <T ,R> List<R> mapValueToList (Map<T , R> map) {
+        List<R> list = new ArrayList<>();
+        for (T t : map.keySet()) {
+            list.add(map.get(t));
+        }
+        return list;
+    }
+
+    public static <T ,R> List<T> mapKeyToList (Map<T , R> map) {
+        List<T> list = new ArrayList<>();
+        for (T t : map.keySet()) {
+            list.add(t);
+        }
+        return list;
+    }
+
+    public static <T> List<T> initList (List<T> list , T t) {
+        List<T> result = new ArrayList<>();
+        for (T t1 : list) {
+            result.add(t);
+        }
+        return result;
+    }
 
 //    public static List<Map<String , Object>> strToMap(String str) throws InstantiationException, IllegalAccessException {
 //        str = str.substring(1 , str.length() -1);
