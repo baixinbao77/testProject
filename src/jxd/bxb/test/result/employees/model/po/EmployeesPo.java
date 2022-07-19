@@ -5,10 +5,12 @@ import jxd.bxb.test.Connect.Conn.DataBase;
 import jxd.bxb.test.Connect.annotation.DS;
 import jxd.bxb.test.Connect.annotation.TableField;
 import jxd.bxb.test.Connect.annotation.TableName;
+import jxd.bxb.test.utils.annotation.TableId;
+
 @DS(DataBase.MYSQL)
 @TableName("employees")
 public class EmployeesPo{
-	@TableField("employeeID")
+	@TableId("employeeID")
 	private Integer employeeid;// 人员ID
 	@TableField("employeeName")
 	private String employeename;// 人员名字

@@ -1,6 +1,5 @@
 package jxd.bxb.test;
 
-import com.sun.org.apache.xml.internal.security.utils.JavaUtils;
 import jxd.bxb.test.All.EntityUtils.EntityUtil;
 import jxd.bxb.test.All.EntityUtils.PoUtils;
 import jxd.bxb.test.Connect.Controller.BaseController;
@@ -11,7 +10,6 @@ import jxd.bxb.test.result.employees.model.po.EmployeesPo;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -84,13 +82,12 @@ public void testsh(){
         employeesPo.setHiredate("2022-02-02");
 
         super.insert(employeesPo);
-
     }
 
     @Test
     public void testsas () {
-        SQL<EmployeesPo> sql = new SQL<EmployeesPo>();
-        SQL id = sql.select("*").select("ID").select("ENPLORMANE","ID");
+        SQL<EmployeesPo> sql = new SQL(EmployeesPo.class);
+        SQL id = sql.select("*").select("ID").select("ENPLORMANE","ID").select("sajjasjsaj");
         System.out.println(id.getSelect());
     }
 

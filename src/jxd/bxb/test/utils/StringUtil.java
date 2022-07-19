@@ -76,6 +76,20 @@ public class StringUtil {
         return false;
     }
 
+    public static <T> List<T> move(List<T> list , int param , int position) {
+        if (isNotEmpty(list)) {
+            int size = list.size();
+            if (size < position || size < param) {
+                return list;
+            } else {
+                T start = list.get(param - 1);
+                list.remove(start);
+                list.add(position - 1, start);
+            }
+        }
+        return list;
+    }
+
     public static <T> boolean isEmpty(List<T> list) {
         return list == null || list.size() == 0;
     }

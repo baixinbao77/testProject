@@ -4,9 +4,7 @@ import jxd.bxb.test.Connect.Conn.Table;
 import jxd.bxb.test.Connect.annotation.TableName;
 import jxd.bxb.test.utils.BeanUtils;
 import jxd.bxb.test.utils.StringUtil;
-import sun.print.PSPrinterJob;
 
-import javax.print.attribute.standard.PrinterURI;
 import java.sql.SQLException;
 
 /**
@@ -21,12 +19,13 @@ public final class SQL<T> {
     private Class entityClass;
     private Table table;
 
-    public SQL() {
+    public SQL(Class entityClass) {
+        this.entityClass = entityClass;
         this.select = this.select.append("SELECT ");
         this.insert = this.insert.append("INSERT ");
         this.update = this.update.append("UPDATE ");
         this.delete = this.delete.append("DALETE ");
-
+        setTable();
     }
 
     public StringBuilder getSelect() {
@@ -65,36 +64,37 @@ public final class SQL<T> {
         if (checkFrom(this.select)) {
             int fromPosition = getFromPosition(this.select);
             if (StringUtil.isNotEmpty(colums)) {
-                if (!this.select.toString().endsWith("SELECT ")) {
-                    this.select.insert(fromPosition, ",");
+                for (String colum : colums) {
+                    select(colum);
                 }
-                for (int i = 0; i < colums.length - 1; i++) {
-                    this.select.insert(fromPosition, colums[i] + ",");
-                }
-                this.select.insert(fromPosition, colums[colums.length - 1]);
             }
         } else {
             if (StringUtil.isNotEmpty(colums)) {
-                if (!this.select.toString().endsWith("SELECT ")) {
-                    this.select.append(",");
+                for (String colum : colums) {
+                    select(colum);
                 }
-                for (int i = 0; i < colums.length - 1; i++) {
-                    this.select.append(colums[i] + ",");
-                }
-                this.select.append(colums[colums.length -1 ]);
-                setFrom(this.select);
-                return this;
             }
         }
         return this;
     }
 
     public SQL select (String colum) {
-        if (this.select.toString().endsWith("SELECT ")) {
-            this.select.append(colum);
+        if (checkFrom(this.select)){
+            int fromPosition = getFromPosition(this.select);
+            if (this.select.toString().endsWith("SELECT ")) {
+                this.select.insert(fromPosition , colum + " ");
+            } else {
+                this.select.insert(fromPosition , "," + colum + " ");
+            }
         } else {
-            this.select.append("," + colum);
+            if (this.select.toString().endsWith("SELECT ")) {
+                this.select.append(colum + " ");
+            } else {
+                this.select.append("," + colum + " ");
+            }
+            setFrom(this.select);
         }
+
         return this;
     }
 
@@ -112,7 +112,7 @@ public final class SQL<T> {
     private void setFrom (StringBuilder builder) {
         String tableName = table.getTableName();
         if (builder.toString().startsWith("SELECT")) {
-            builder.append(" FROM ");
+            builder.append("FROM ");
         }
         if (builder.toString().startsWith("INSERT ")) {
             builder.append(" ");
@@ -121,7 +121,7 @@ public final class SQL<T> {
             builder.append(" ");
         }
         if (builder.toString().startsWith("DELETE ")) {
-            builder.append(" FROM ");
+            builder.append("FROM ");
         }
         builder.append("\"" + tableName + "\"");
     }
@@ -136,6 +136,10 @@ public final class SQL<T> {
                 e.printStackTrace();
             }
         }
+    }
+
+    public SQL where (String colum) {
+
     }
 
 }
