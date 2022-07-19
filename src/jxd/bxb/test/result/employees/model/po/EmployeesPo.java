@@ -1,10 +1,11 @@
 package jxd.bxb.test.result.employees.model.po;
 
 
-import jxd.bxb.test.utils.annotation.DS;
-import jxd.bxb.test.utils.annotation.TableField;
-import jxd.bxb.test.utils.annotation.TableName;
-@DS("MySql")
+import jxd.bxb.test.Connect.Conn.DataBase;
+import jxd.bxb.test.Connect.annotation.DS;
+import jxd.bxb.test.Connect.annotation.TableField;
+import jxd.bxb.test.Connect.annotation.TableName;
+@DS(DataBase.MYSQL)
 @TableName("employees")
 public class EmployeesPo{
 	@TableField("employeeID")

@@ -1,10 +1,14 @@
 package jxd.bxb.test;
 
-import jxd.bxb.test.Connect.MyConnect;
-import jxd.bxb.test.Connect.PgConnect;
+import jxd.bxb.test.Connect.Conn.DbConnect;
+import jxd.bxb.test.Connect.Conn.MyConnect;
+import jxd.bxb.test.Connect.Conn.PgConnect;
+import jxd.bxb.test.utils.FileUtils;
 import jxd.bxb.test.utils.StringUtil;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.*;
@@ -141,10 +145,17 @@ public class Test01 {
                     j = 0;
                 }
             }
-            System.out.print("#{" + poName + "." + StringUtil.strToStr(fieldList.get(fieldList.size() -1)) + "}");
+            if (fieldTypeList.get(fieldList.size() -1).indexOf("date") > -1) {
+                System.out.print("to_date(#{" + poName + "." + StringUtil.strToStr(fieldList.get(fieldList.size() -1)) + "}, 'YYYY-MM-DD')");
+            } else if (fieldTypeList.get(fieldList.size() -1).indexOf("timestamp") > -1) {
+                System.out.print("to_timestamp(#{" + poName + "." + StringUtil.strToStr(fieldList.get(fieldList.size() -1)) + "}, 'YYYY-MM-DD HH24:MI:SS')");
+            } else {
+                System.out.print("#{" + poName + "." + StringUtil.strToStr(fieldList.get(fieldList.size() -1)) + "}");
+            }
             System.out.println(");");
         }
     }
+
 
     @Test
     public void update() throws SQLException {
@@ -172,7 +183,14 @@ public class Test01 {
                     System.out.println("\"" + fieldList.get(i) + "\" = #{" + poName + "." + StringUtil.strToStr(fieldList.get(i)) + "},");
                 }
             }
-            System.out.println("\"" + fieldList.get(fieldList.size() - 1) + "\" = #{" + poName + "." + StringUtil.strToStr(fieldList.get(fieldList.size() - 1)) + "}");
+
+            if (fieldTypeList.get(fieldList.size() -1).indexOf("date") > -1) {
+                System.out.print("\"" + fieldList.get(fieldList.size() - 1) + "\" = to_date(#{" + poName + "." + StringUtil.strToStr(fieldList.get(fieldList.size() -1)) + "}, 'YYYY-MM-DD')");
+            } else if (fieldTypeList.get(fieldList.size() -1).indexOf("timestamp") > -1) {
+                System.out.print("\"" + fieldList.get(fieldList.size() - 1) + "\" = to_timestamp(#{" + poName + "." + StringUtil.strToStr(fieldList.get(fieldList.size() -1)) + "}, 'YYYY-MM-DD HH24:MI:SS')");
+            } else {
+                System.out.print("\"" + fieldList.get(fieldList.size() - 1) + "\" = #{" + poName + "." + StringUtil.strToStr(fieldList.get(fieldList.size() -1)) + "}");
+            }
             System.out.println("WHERE \"" + fieldList.get(0) + "\" = #{" + poName + "." + StringUtil.strToStr(fieldList.get(0)) + "} AND \"DATA_STATUS\" = 0");
         }
     }
@@ -282,6 +300,47 @@ public class Test01 {
     }
 
 
-    
+    @Test
+    public void modifyTest () {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String s = scanner.nextLine();
+            System.out.println("                // 将修改记录添加到数据库中");
+            System.out.println("systemHisService.saveSysHisByField("+ s + ".getGeneralId() ,DateUtil.getTime() , "+ s + ".getUpdateUserId() ,\n" +
+                    "                "+ s + ".getUpdateUserName() , "+ s + ".getUpdateDeptId() , "+ s + ".getUpdateDeptName() ,\n" +
+                    "                null);");
+        }
+    }
 
+
+
+    @Test
+    public void testttt() {
+        try {
+            File file = FileUtils.createFile(null, "TableName", "txt");
+            StringBuilder builder = new StringBuilder();
+            for (String tableName : DbConnect.getTableList()) {
+                for (String tableField : DbConnect.getFieldList(tableName)) {
+                    builder.append(tableField)
+                            .append("\n");
+                }
+
+            }
+            System.out.println(builder.toString());
+            FileUtils.writeFile(file, builder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void tststts() {
+        try {
+            DbConnect.getFieldList(DbConnect.getTableList().get(0)).forEach(System.out::println);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

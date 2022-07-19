@@ -1,10 +1,14 @@
-package jxd.bxb.test.Connect;
+package jxd.bxb.test.Connect.Conn;
 
 /**
  * @author baixinbao
  * @create 2022/6/23
  */
 public enum ResultSetColumnKeys {
+    /**
+     * 表类别
+     */
+    TABLE_TYPE,
     /**
      * 表类别
      */

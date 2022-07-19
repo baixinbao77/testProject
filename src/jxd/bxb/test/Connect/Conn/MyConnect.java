@@ -1,4 +1,4 @@
-package jxd.bxb.test.Connect;
+package jxd.bxb.test.Connect.Conn;
 
 import jxd.bxb.test.utils.Constant;
 import jxd.bxb.test.utils.StringUtil;

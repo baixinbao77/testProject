@@ -8,10 +8,12 @@ import jxd.bxb.test.All.EntityUtils.EntityUtil;
 import jxd.bxb.test.All.EntityUtils.Path;
 import jxd.bxb.test.result.Result;
 
+import javax.activation.FileTypeMap;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.spi.FileTypeDetector;
 
 /**
  * @author BXBstart
@@ -39,6 +41,22 @@ public class FileUtils {
             return new File(Result.class.getResource("/").getPath() + Constant.SLASH + FileName + Constant.SPOT + Constant.XML_SUFFIX_NAME);
         }
         File file = new File(FilePath + Constant.SLASH + FileName + Constant.SPOT + Constant.XML_SUFFIX_NAME);
+        File catalogue = new File(FilePath + Constant.SLASH);
+        if (!file.exists()) {
+            catalogue.mkdirs();
+            file.createNewFile();
+        } else {
+            file.delete();
+            file.createNewFile();
+        }
+        return file;
+    }
+
+    public static File createFile(String FilePath , String FileName ,  String fileType) throws IOException {
+        if (FilePath == null || FilePath.equals("")) {
+            return new File(FileUtils.class.getResource("/").getPath() + Constant.SLASH + FileName + Constant.SPOT + fileType);
+        }
+        File file = new File(FilePath + Constant.SLASH + FileName + Constant.SPOT + fileType);
         File catalogue = new File(FilePath + Constant.SLASH);
         if (!file.exists()) {
             catalogue.mkdirs();

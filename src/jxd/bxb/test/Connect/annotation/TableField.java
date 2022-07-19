@@ -1,4 +1,4 @@
-package jxd.bxb.test.utils.annotation;
+package jxd.bxb.test.Connect.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

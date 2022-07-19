@@ -1,14 +1,15 @@
 package jxd.bxb.test.result;
 
-import jxd.bxb.test.utils.annotation.DS;
-import jxd.bxb.test.utils.annotation.TableField;
-import jxd.bxb.test.utils.annotation.TableName;
+import jxd.bxb.test.Connect.Conn.DataBase;
+import jxd.bxb.test.Connect.annotation.DS;
+import jxd.bxb.test.Connect.annotation.TableField;
+import jxd.bxb.test.Connect.annotation.TableName;
 
 /**
  * @author BXBstart
  * @create 2022-06-25 19:39
  */
-@DS("MySql")
+@DS(DataBase.MYSQL)
 @TableName(value = "employees")
 public class Result {
     @TableField("employeeID")

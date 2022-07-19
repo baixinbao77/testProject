@@ -1,7 +1,6 @@
 package jxd.bxb.test.All.EntityUtils;
 
 import jxd.bxb.test.All.BaseUtils;
-import jxd.bxb.test.Connect.PgConnect;
 import jxd.bxb.test.utils.Constant;
 import jxd.bxb.test.utils.FileUtils;
 import jxd.bxb.test.utils.StringUtil;
@@ -10,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**

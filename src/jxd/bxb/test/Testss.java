@@ -1,24 +1,14 @@
 package jxd.bxb.test;
 
-import com.mysql.cj.xdevapi.WarningImpl;
-import com.sun.org.slf4j.internal.LoggerFactory;
 import jxd.bxb.test.All.EntityUtils.EntityUtil;
-import jxd.bxb.test.All.EntityUtils.Path;
 import jxd.bxb.test.All.EntityUtils.PoUtils;
 import jxd.bxb.test.Connect.Controller.BaseController;
-import jxd.bxb.test.Connect.MyConnect;
-import jxd.bxb.test.Connect.PgConnect;
-import jxd.bxb.test.result.Result;
+import jxd.bxb.test.Connect.Conn.MyConnect;
 import jxd.bxb.test.result.employees.model.po.EmployeesPo;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

@@ -1,6 +1,6 @@
 package jxd.bxb.test;
 
-import jxd.bxb.test.Connect.PgConnect;
+import jxd.bxb.test.Connect.Conn.PgConnect;
 import jxd.bxb.test.utils.StringUtil;
 import org.junit.jupiter.api.Test;
 
@@ -49,6 +49,7 @@ public class ShowDocTest {
                 } else {
                     System.out.println("| " + StringUtil.strToStr(labelName) + "| string | " + fieldDesc + "|");
                 }
+                i++;
             }
         }
     }

@@ -1,4 +1,4 @@
-package jxd.bxb.test.Connect;
+package jxd.bxb.test.Connect.Conn;
 
 /**
  * @author baixinbao

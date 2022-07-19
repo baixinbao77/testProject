@@ -1,4 +1,5 @@
-package jxd.bxb.test.Connect;
+package jxd.bxb.test.Connect.Conn;
+
 
 import java.sql.SQLException;
 import java.util.List;

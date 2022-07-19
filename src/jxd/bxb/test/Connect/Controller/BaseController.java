@@ -1,21 +1,17 @@
 package jxd.bxb.test.Connect.Controller;
 
-import com.sun.xml.internal.ws.server.provider.AsyncProviderInvokerTube;
 import jxd.bxb.test.All.BaseUtils;
-import jxd.bxb.test.Connect.MyConnect;
-import jxd.bxb.test.Connect.PgConnect;
-import jxd.bxb.test.Connect.Table;
+import jxd.bxb.test.Connect.Conn.DataBase;
+import jxd.bxb.test.Connect.Conn.MyConnect;
+import jxd.bxb.test.Connect.Conn.PgConnect;
+import jxd.bxb.test.Connect.Conn.Table;
 import jxd.bxb.test.utils.StringUtil;
-import jxd.bxb.test.utils.annotation.DS;
-import jxd.bxb.test.utils.annotation.TableField;
-import jxd.bxb.test.utils.annotation.TableName;
+import jxd.bxb.test.Connect.annotation.DS;
+import jxd.bxb.test.Connect.annotation.TableField;
+import jxd.bxb.test.Connect.annotation.TableName;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +34,7 @@ public class BaseController<T> extends BaseUtils {
     private List<Object> columList = new ArrayList<>();
 
     public int insert (T entity) {
+        getConnect();
         int result = 0 ;
         setValue(entity);
         String sql = getInsert().toString();
@@ -45,7 +42,7 @@ public class BaseController<T> extends BaseUtils {
             PreparedStatement psmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             setParams(psmt, fieldList.toArray());
             result = psmt.executeUpdate();
-
+            close(null , psmt , conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -157,19 +154,45 @@ public class BaseController<T> extends BaseUtils {
     private void setConn () {
         if (entityClass.isAnnotationPresent(DS.class)) {
             DS ds = (DS) entityClass.getDeclaredAnnotation(DS.class);
-            String value = ds.value();
-            if (value.equals("MySql")) {
+            DataBase value = ds.value();
+            if (value.equals(DataBase.MYSQL)) {
                 conn = MyConnect.getConnection();
-            } else if (value.equals("PgSql")) {
+            } else if (value.equals(DataBase.PGSQL)) {
                 conn = PgConnect.getConnection();
             } else {
-                logger.info("DS数据库不正确");
+                logger.info("DS数据库连接不正确");
             }
         } else {
             logger.info("数据库DS未加判断");
         }
     }
 
+    private void getConnect () {
+        if (conn == null) {
+            setConn();
+        }
+    }
+
+
+    public List<T> queryList () {
+        return null;
+    }
+
+    protected void close(ResultSet rs , PreparedStatement psmt , Connection conn){
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+            if(psmt!=null){
+                psmt.close();
+            }
+            if(conn!=null && !conn.isClosed()){
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
