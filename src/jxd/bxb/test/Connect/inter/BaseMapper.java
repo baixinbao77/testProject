@@ -6,6 +6,5 @@ package jxd.bxb.test.Connect.inter;
  */
 public interface BaseMapper<T> {
     int insert (T entity);
-    int update (T entity);
-    int delete (T entity);
+
 }

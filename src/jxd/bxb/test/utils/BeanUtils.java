@@ -1,6 +1,8 @@
 package jxd.bxb.test.utils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,5 +58,20 @@ public class BeanUtils {
         copyProperties(source, target);
         return target;
     }
+
+    public static Class getEntityClass (Class clazz) {
+        Class entityClass = null;
+        Type genericSuperclass = clazz.getGenericSuperclass();
+        Type[] actualTypeArguments = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
+        Type actualType = actualTypeArguments[0];
+        try {
+            entityClass = Class.forName(actualType.getTypeName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return entityClass;
+    }
+
+
 
 }

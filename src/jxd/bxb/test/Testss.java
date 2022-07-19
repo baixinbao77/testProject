@@ -1,13 +1,17 @@
 package jxd.bxb.test;
 
+import com.sun.org.apache.xml.internal.security.utils.JavaUtils;
 import jxd.bxb.test.All.EntityUtils.EntityUtil;
 import jxd.bxb.test.All.EntityUtils.PoUtils;
 import jxd.bxb.test.Connect.Controller.BaseController;
 import jxd.bxb.test.Connect.Conn.MyConnect;
+import jxd.bxb.test.Connect.Controller.SQL;
+import jxd.bxb.test.Connect.inter.BaseMapper;
 import jxd.bxb.test.result.employees.model.po.EmployeesPo;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,7 +19,7 @@ import java.util.List;
  * @author baixinbao
  * @create 2022/6/27
  */
-public class Testss extends BaseController<EmployeesPo> {
+public class Testss extends BaseController<EmployeesPo> implements BaseMapper<EmployeesPo> {
 
     public class ListNode {
         int val;
@@ -80,13 +84,14 @@ public void testsh(){
         employeesPo.setHiredate("2022-02-02");
 
         super.insert(employeesPo);
+
     }
 
     @Test
     public void testsas () {
-       String a = null;
-        a.length();
-        int integer = 10;
+        SQL<EmployeesPo> sql = new SQL<EmployeesPo>();
+        SQL id = sql.select("*").select("ID").select("ENPLORMANE","ID");
+        System.out.println(id.getSelect());
     }
 
     @Test

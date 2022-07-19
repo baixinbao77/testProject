@@ -5,6 +5,7 @@ import jxd.bxb.test.Connect.Conn.DataBase;
 import jxd.bxb.test.Connect.Conn.MyConnect;
 import jxd.bxb.test.Connect.Conn.PgConnect;
 import jxd.bxb.test.Connect.Conn.Table;
+import jxd.bxb.test.utils.BeanUtils;
 import jxd.bxb.test.utils.StringUtil;
 import jxd.bxb.test.Connect.annotation.DS;
 import jxd.bxb.test.Connect.annotation.TableField;
@@ -81,18 +82,10 @@ public class BaseController<T> extends BaseUtils {
     }
 
     public BaseController () {
-        Type genericSuperclass = getClass().getGenericSuperclass();
-        Type[] actualTypeArguments = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
-        Type actualType = actualTypeArguments[0];
-        try {
-            entityClass = Class.forName(actualType.getTypeName());
-            logger = Logger.getLogger(entityClass.getName());
-            setTable();
-            setField();
-            setConn();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        entityClass = BeanUtils.getEntityClass(this.getClass());
+        logger = Logger.getLogger(entityClass.getName());
+        setTable();
+        setField();
     }
 
     private void setTable () {
