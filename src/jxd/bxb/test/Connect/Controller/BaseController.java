@@ -10,8 +10,13 @@ import jxd.bxb.test.utils.StringUtil;
 import jxd.bxb.test.Connect.annotation.DS;
 import jxd.bxb.test.Connect.annotation.TableField;
 import jxd.bxb.test.Connect.annotation.TableName;
+import jxd.bxb.test.utils.annotation.TableId;
 
 import java.lang.reflect.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +30,7 @@ import java.util.logging.Logger;
  */
 public class BaseController<T> extends BaseUtils {
 
-    private Class entityClass;
+    public Class entityClass;
     private Table table;
     private Logger logger;
     private Connection conn;
@@ -44,6 +49,51 @@ public class BaseController<T> extends BaseUtils {
             setParams(psmt, fieldList.toArray());
             result = psmt.executeUpdate();
             close(null , psmt , conn);
+            if (result > 0) {
+                logger.info("插入成功！");
+            } else {
+                logger.info("插入失败！");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public int updateById (T entity) {
+        int result = 0 ;
+        setValue(entity);
+        String sql = getUpdate().toString();
+        try {
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            setParams(psmt, StringUtil.move(fieldList , 1 , fieldList.size() ).toArray());
+            result = psmt.executeUpdate();
+            if (result > 0) {
+                logger.info("更新成功！");
+            } else {
+                logger.info("更新失败！");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public int delete (T entity) {
+        int result = 0 ;
+
+        setValue(entity);
+
+        String sql = getDelete().toString();
+        try {
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            setParams(psmt, fieldList.get(0));
+            result = psmt.executeUpdate();
+            if (result > 0) {
+                logger.info("删除成功！");
+            } else {
+                logger.info("删除失败！");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -51,6 +101,31 @@ public class BaseController<T> extends BaseUtils {
     }
 
 
+    private StringBuilder getUpdate () {
+        StringBuilder update = new StringBuilder();
+        update.append("UPDATE " + table.getTableName());
+        update.append(" SET ");
+        setUpdate(update, columList, "?");
+        return update;
+    }
+
+    private StringBuilder getDelete () {
+        StringBuilder delete = new StringBuilder();
+        delete.append("DELETE FROM " + table.getTableName());
+        delete.append(" WHERE ");
+        delete.append(columList.get(0) + "=" + "?");
+        return delete;
+    }
+
+    private void setUpdate (StringBuilder builder , List<Object> list , String sign) {
+        if (StringUtil.isNotEmpty(list)) {
+            for (int i = 1; i < list.size() -1 ; i++) {
+                builder.append(list.get(i).toString() + "=" + sign + ",");
+            }
+            builder.append(list.get(list.size() - 1).toString() + "=" + sign);
+            builder.append(" WHERE " + list.get(0) + "= ?");
+        }
+    }
 
     private void setParams (PreparedStatement psmt , Object... params) {
         if (StringUtil.isNotEmpty(params)) {
@@ -114,6 +189,12 @@ public class BaseController<T> extends BaseUtils {
                     fieldMap.put(field.getName(), value);
                     columList.add(value);
                 }
+            } else if (field.isAnnotationPresent(TableId.class)) {
+                TableId tableId = field.getAnnotation(TableId.class);
+                String value = tableId.value();
+                fieldMap.put(field.getName(), value);
+                fieldList.add(0, field.getName());
+                columList.add(0, value);
             }
         }
     }
@@ -133,7 +214,6 @@ public class BaseController<T> extends BaseUtils {
                 try {
                     Object value = method.invoke(entity);
                     setValue(method, value);
-
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
@@ -153,7 +233,8 @@ public class BaseController<T> extends BaseUtils {
             } else if (value.equals(DataBase.PGSQL)) {
                 conn = PgConnect.getConnection();
             } else {
-                logger.info("DS数据库连接不正确");
+                logger.info("" +
+                        "");
             }
         } else {
             logger.info("数据库DS未加判断");
@@ -186,7 +267,6 @@ public class BaseController<T> extends BaseUtils {
             e.printStackTrace();
         }
     }
-
 
 
 }
