@@ -90,5 +90,19 @@ public class EmployeesPo{
 		return idcard;
 	}
 
-
+	@Override
+	public String toString() {
+		return "EmployeesPo{" +
+				"employeeid=" + employeeid +
+				", employeename='" + employeename + '\'' +
+				", phonenumber='" + phonenumber + '\'' +
+				", hiredate='" + hiredate + '\'' +
+				", salary=" + salary +
+				", password='" + password + '\'' +
+				", departmentid=" + departmentid +
+				", sex=" + sex +
+				", age=" + age +
+				", idcard='" + idcard + '\'' +
+				'}';
+	}
 }
