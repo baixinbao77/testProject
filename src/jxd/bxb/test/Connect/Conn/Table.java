@@ -13,15 +13,25 @@ public class Table {
     private List<String> colums;
     private List<String> types;
     private String tableName;
+    private boolean isNull = true;
 
     public Table (String tableName) throws SQLException {
         this.tableName = tableName;
         this.colums = MyConnect.getFieldList(tableName);
         this.types = MyConnect.getFieldTypeList(tableName);
+        this.isNull = false;
     }
 
     public Table () {
 
+    }
+
+    public boolean isNull() {
+        return isNull;
+    }
+
+    public void setNull(boolean aNull) {
+        isNull = aNull;
     }
 
     public List<String> getColums() {

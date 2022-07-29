@@ -60,7 +60,13 @@ public class BaseController<T> extends BaseUtils {
         return result;
     }
 
+    public List<T> queryList () {
+
+        return null;
+    }
+
     public int updateById (T entity) {
+        getConnect ();
         int result = 0 ;
         setValue(entity);
         String sql = getUpdate().toString();
@@ -80,10 +86,9 @@ public class BaseController<T> extends BaseUtils {
     }
 
     public int delete (T entity) {
+        getConnect ();
         int result = 0 ;
-
         setValue(entity);
-
         String sql = getDelete().toString();
         try {
             PreparedStatement psmt = conn.prepareStatement(sql);
@@ -159,8 +164,7 @@ public class BaseController<T> extends BaseUtils {
     public BaseController () {
         entityClass = BeanUtils.getEntityClass(this.getClass());
         logger = Logger.getLogger(entityClass.getName());
-        setTable();
-        setField();
+
     }
 
     private void setTable () {
@@ -245,12 +249,16 @@ public class BaseController<T> extends BaseUtils {
         if (conn == null) {
             setConn();
         }
+        if (table.isNull()) {
+            setTable();
+        }
+        if (StringUtil.isEmpty(columList , fieldList) || fieldMap.isEmpty()) {
+            setField();
+        }
     }
 
 
-    public List<T> queryList () {
-        return null;
-    }
+
 
     protected void close(ResultSet rs , PreparedStatement psmt , Connection conn){
         try {
