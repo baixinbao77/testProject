@@ -37,19 +37,6 @@ public class Test01 {
 
     }
 
-    @Test
-    public void test(){
-        Class<MyConnect> myClass = MyConnect.class;
-        Method[] methods = myClass.getMethods();
-        for (Method method : methods) {
-            String name = method.getName();
-        }
-    }
-
-    @Test
-    public void test1(){
-        System.out.println("\\");
-    }
 
     @Test
     public void daxie(){
@@ -59,6 +46,8 @@ public class Test01 {
             System.out.println(s.replaceAll(" ", "_").toUpperCase(Locale.ROOT));
         }
     }
+
+
 
 
     @Test

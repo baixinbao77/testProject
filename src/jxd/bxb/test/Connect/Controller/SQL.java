@@ -139,7 +139,7 @@ public final class SQL<T> {
     }
 
     public SQL where (String colum) {
-
+        return this;
     }
 
 }

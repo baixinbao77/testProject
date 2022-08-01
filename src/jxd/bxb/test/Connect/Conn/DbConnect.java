@@ -50,15 +50,43 @@ public class DbConnect {
         }
     }
 
+    public static List<String> getLengthList(String tableName) throws SQLException {
+        if (conn == null) {
+            conn = getConnection();
+        }
+        tableName = tableName.trim();
+        String sql = "exec sp_help " + tableName + ";";
+        List<String> list = new ArrayList<>();
+        PreparedStatement stmt = null;
+        String catalog = conn.getCatalog();
+
+        stmt = conn.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            String length = rs.getString(ResultSetColumnKeys.LENGTH.name()) == null ? "" : rs.getString(ResultSetColumnKeys.LENGTH.name());
+            list.add(length);
+        }
+        return list;
+    }
+
     public static List<String> getFieldDescList(String tableName) throws SQLException {
         if (conn == null) {
             conn = getConnection();
         }
-        DatabaseMetaData metaData = conn.getMetaData();
+        tableName = tableName.trim();
+        String sql = "select a.name as table_name, b.name as column_name, CONVERT(nvarchar(50),ISNULL(c.value, '')) as REMARKS" +
+                "    from sys.tables a left join sys.columns b on a.object_id=b.object_id " +
+                "    left join sys.extended_properties c on a.object_id=c.major_id " +
+                "    where a.name='" + tableName + "' and c.minor_id<>0 and b.column_id=c.minor_id " +
+                "    and a.schema_id=(select schema_id from sys.schemas where name='dbo');";
+
         List<String> list = new ArrayList<>();
-        ResultSet rs = metaData.getColumns(conn.getCatalog(), "%", tableName, "%");
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            list.add(rs.getString(ResultSetColumnKeys.REMARKS.name()));
+            String remarks = rs.getString(ResultSetColumnKeys.REMARKS.name()) == null ? "" : rs.getString(ResultSetColumnKeys.REMARKS.name());
+            list.add(remarks);
         }
         return list;
     }
@@ -76,7 +104,7 @@ public class DbConnect {
         return result;
     }
 
-    public static Connection getConnection() {
+    private static Connection getConnection() {
         Connection conn = null;
         try {
             Class.forName("java.sql.Driver");

@@ -6,6 +6,10 @@ package jxd.bxb.test.Connect.Conn;
  */
 public enum ResultSetColumnKeys {
     /**
+     * 字段长度
+     */
+    LENGTH,
+    /**
      * 表类别
      */
     TABLE_TYPE,

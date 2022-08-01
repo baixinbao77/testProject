@@ -4,11 +4,13 @@ import com.sun.org.apache.xml.internal.security.utils.JavaUtils;
 import jxd.bxb.test.All.EntityUtils.EntityUtil;
 import jxd.bxb.test.All.EntityUtils.PoUtils;
 import jxd.bxb.test.Connect.Conn.DbConnect;
+import jxd.bxb.test.Connect.Conn.PgConnect;
 import jxd.bxb.test.Connect.Controller.BaseController;
 import jxd.bxb.test.Connect.Conn.MyConnect;
 import jxd.bxb.test.Connect.Controller.SQL;
 import jxd.bxb.test.Connect.inter.BaseMapper;
 import jxd.bxb.test.result.employees.model.po.EmployeesPo;
+import jxd.bxb.test.utils.StringUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -89,7 +91,7 @@ public void testsh(){
 
     @Test
     public void testsas () {
-        SQL<EmployeesPo> sql = new SQL<EmployeesPo>();
+        SQL<EmployeesPo> sql = new SQL<>(EmployeesPo.class);
         SQL id = sql.select("*").select("ID").select("ENPLORMANE","ID");
         System.out.println(id.getSelect());
     }
@@ -164,6 +166,21 @@ public void testsh(){
         return list;
     }
 
+    @Test
+    public void testtts() throws SQLException {
+        List<String> fieldList = PgConnect.getFieldList("t_process_interlock_account");
+        for (String s : fieldList) {
+            System.out.println(StringUtil.strToStr(s));
+        }
+    }
+
+    @Test
+    public void testtasts() throws SQLException {
+        List<String> fieldList = PgConnect.getFieldDescList("t_process_interlock_account");
+        for (String s : fieldList) {
+            System.out.println(s);
+        }
+    }
 
 
 }
