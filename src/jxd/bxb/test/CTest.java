@@ -1,6 +1,9 @@
 package jxd.bxb.test;
 
+import jxd.bxb.test.All.BaseUtils;
+import jxd.bxb.test.All.EntityUtils.EntityUtil;
 import jxd.bxb.test.Connect.Conn.DbConnect;
+import jxd.bxb.test.utils.BeanUtils;
 import jxd.bxb.test.utils.StringUtil;
 import org.junit.jupiter.api.Test;
 
@@ -51,6 +54,27 @@ public class CTest {
                 System.out.println("<column name=\"" + fieldList.get(i) + "\" length=\"100\" not-null=\"false\"/>");
                 System.out.println("</property>");
             }
+        }
+    }
+
+    @Test
+    public void saveField() throws SQLException {
+        String tableName = "T_PROCESS_CARD_ACCOUNT";
+        List<String> fieldList = DbConnect.getFieldList(tableName);
+        List<String> fieldTypeList = DbConnect.getFieldTypeList(tableName);
+        fieldList = EntityUtil.initField(fieldList);
+        for (int i = 0; i < fieldList.size() -1; i++) {
+            if (fieldTypeList.get(i).indexOf("int") > -1) {
+                System.out.print("int " + fieldList.get(i));
+            } else {
+                System.out.print("string " + fieldList.get(i));
+            }
+        }
+        int i = fieldList.size() -1;
+        if (fieldTypeList.get(i).indexOf("int") > -1) {
+            System.out.print("int " + fieldList.get(i));
+        } else {
+            System.out.print("string " + fieldList.get(i));
         }
     }
 }
