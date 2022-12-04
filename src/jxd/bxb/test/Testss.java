@@ -1,8 +1,6 @@
 package jxd.bxb.test;
 
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.TSFBuilder;
+
 import jxd.bxb.test.All.EntityUtils.EntityUtil;
 import jxd.bxb.test.All.EntityUtils.PoUtils;
 import jxd.bxb.test.Connect.Conn.DbConnect;
@@ -633,8 +631,6 @@ public void testsh(){
         is.close();
         System.out.println(builder);
         Map<String , Object> map = new HashMap<>();
-        JSONObject parse = JSONObject.parseObject(String.valueOf(builder));
-        System.out.println(parse);
 
     }
 

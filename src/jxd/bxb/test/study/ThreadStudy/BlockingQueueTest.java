@@ -82,7 +82,7 @@ public class BlockingQueueTest {
     }
 
     public static void search(Path file , String keyword) {
-        try(var in = new Scanner(file , StandardCharsets.UTF_8)) {
+        try(var in = new Scanner(file , StandardCharsets.UTF_8.name())) {
             int lineNumber = 0;
             while (in.hasNextLine()) {
                 lineNumber++;
