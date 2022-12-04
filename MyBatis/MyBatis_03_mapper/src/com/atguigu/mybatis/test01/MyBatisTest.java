@@ -67,7 +67,7 @@ public class MyBatisTest {
         EmployeeDao mapper = sqlSession.getMapper(EmployeeDao.class);
         System.out.println(mapper.getClass());
         try {
-            Employee employeeById = mapper.getEmployeeById(4);
+            Employee employeeById = mapper.getEmployeeById(1);
             System.out.println(employeeById);
         } finally {
             sqlSession.close();
