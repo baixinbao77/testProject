@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mybatis.dao.EmployeeDao">
+<!--
+    namespace:名称空间
+    id : 唯一标识
+    resultType： 返回值类型
+    #{id}： 从传递过来的参数中取出id值
+-->
+    <select id="getEmployeeById" resultType="com.atguigu.mybatis.bean.Employee">
+        select * from tbl_employee where id = #{id}
+    </select>
+
+<!--   parameterType: 可以省略，     mysql支持自增主键，自增主键值的获取，mybatis也是利用Statement.getGenratedKeys();
+            useGeneratedKeys="true": 使用自增主键获取主键值策略
+            keyProperty="" 指定对应的主键属性，也就是mybatis获取到主键值以后，将这个值封装给javaBean的哪个属性-->
+<!--    Oracle 不支持自增：Oracle使用序列来模拟自增，
+            每次插入的数据的主键是从序列中拿到的值；如何获取到这个值-->
+    <insert id="insert" parameterType="com.atguigu.mybatis.bean.Employee" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO mybatis.tbl_employee
+            (last_name, gender, email)
+        VALUES(#{lastName}, #{gender}, #{email});
+    </insert>
+    <insert id="insertOracle" databaseId="oracle">
+        <selectKey keyProperty="id" order="BEFORE">
+            select EMPLOYEES_SEQ.nextval from dual
+        </selectKey>
+-- 插入时主键是从序列中拿到的
+        INSERT INTO mybatis.tbl_employee
+        (id , last_name, gender, email)
+        VALUES(#{id},#{lastName}, #{gender}, #{email});
+    </insert>
+    <update id="update">
+        UPDATE mybatis.tbl_employee
+        SET last_name=#{lastName}, gender=#{gender}, email=#{email}
+        WHERE id=#{id};
+    </update>
+    <delete id="deleteById">
+        DELETE FROM mybatis.tbl_employee
+        WHERE id=#{id};
+    </delete>
+</mapper>
