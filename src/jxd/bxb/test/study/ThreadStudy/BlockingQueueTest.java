@@ -29,37 +29,6 @@ public class BlockingQueueTest {
 
     private static BlockingQueue<Path> queue = new ArrayBlockingQueue<>(FILE_QUEUE_SIZE);
 
-    public static void main(String[] args) {
-        try (var in = new Scanner(System.in)) {
-            System.out.print("Enter base directory (e.g. /opt/jdk-9-src): ");
-            String directory = in.nextLine();
-            System.out.print("Enter keyword (e.g volatile): ");
-            String keyword = in.nextLine();
-
-            queue = FileUtils.DictoryFiles(directory);
-
-            for (int i = 0; i < SEARCH_THREADS; i++) {
-                Runnable search = () -> {
-                    try {
-                        var done = false;
-                        while (!done) {
-                            Path file = BlockingQueueTest.queue.take();
-                            if (file == DUMMY) {
-                                BlockingQueueTest.queue.put(file);
-                                done = true;
-                            } else {
-                                search(file, keyword);
-                            }
-                        }
-                    } catch (Exception e) {
-
-                    }
-                };
-                new Thread(search).start();
-            }
-
-        }
-    }
 
     public static void enumerate(Path path) {
         try {
@@ -81,19 +50,5 @@ public class BlockingQueueTest {
         }
     }
 
-    public static void search(Path file , String keyword) {
-        try(var in = new Scanner(file , StandardCharsets.UTF_8.name())) {
-            int lineNumber = 0;
-            while (in.hasNextLine()) {
-                lineNumber++;
-                String line = in.nextLine();
-                if (line.contains(keyword)) {
-                    System.out.printf("%s:%d:%s:%n" , file , lineNumber , line);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 }

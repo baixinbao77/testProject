@@ -9,8 +9,5 @@
         <module name="excel-test" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="excel-test" target="7" />
-    </bytecodeTargetLevel>
   </component>
 </project>
